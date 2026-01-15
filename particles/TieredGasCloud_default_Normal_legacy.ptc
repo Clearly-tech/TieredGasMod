@@ -1,0 +1,31 @@
+EffectDef
+{
+ MinFPS 30
+ Emitors
+ {
+  EmitorDef Clouds
+  {
+   ShapeType Ellipse
+   ShapeSize 100 0.1 100
+   MaxNum 30
+   BirthRate 3.0
+   Material "Graphics/Particles/materials/smoke/smoke_dust_01_em2.emat"
+   ScaleY 0.33
+   SizeMultiplier 60
+   SizeRND 20
+   Velocity 0.2
+   AirResistance 1
+   LifeTime 3600
+   LifeTimeRND 0
+
+      Color
+      {
+        0 0.1 1 0.1
+        1 0.1 1 0.1
+      }
+
+   Alpha { 0 1 }
+  }
+
+ }
+}

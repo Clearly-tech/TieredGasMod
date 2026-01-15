@@ -1,0 +1,496 @@
+FrameWidgetClass AdminMenuRoot {
+ size 819.29706 794.49603
+ halign center_ref
+ valign center_ref
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ draggable 1
+ {
+  ImageWidgetClass Background {
+   ignorepointer 1
+   color 0.1098 0.1255 0.1255 1
+   position -0.44416 0.58425
+   size 808.12201 781.776
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   {
+    TextWidgetClass Title {
+     ignorepointer 1
+     size 446.61801 48
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Tiered Gas Admin Menu"
+     font "gui/fonts/metron-bold"
+    }
+    ButtonWidgetClass BtnNavZones {
+     color 0 0.502 0.1255 1
+     position 101.003 69.01861
+     size 298.96799 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Zones Settings"
+     font "gui/fonts/metron"
+    }
+    ButtonWidgetClass BtnNavSpawner {
+     color 0 0.502 0.1255 1
+     position 100.677 123.968
+     size 299.64102 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Zone Spawner"
+     font "gui/fonts/metron"
+    }
+    ButtonWidgetClass BtnNavConfig {
+     color 0 0.502 0.1255 1
+     position 409.71301 123.37701
+     size 290.60101 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Zone Config"
+     font "gui/fonts/metron"
+    }
+    ButtonWidgetClass BtnNavParticles {
+     color 0 0.502 0.1255 1
+     position 410.133 69.0378
+     size 290.12601 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Particle Viewer"
+     font "gui/fonts/metron"
+    }
+    ButtonWidgetClass BtnClose {
+     color 0.502 0 0 1
+     position 607.76898 715.83301
+     size 167.56 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "Close"
+    }
+    ContentWidgetClass ContentFrame {
+     ignorepointer 1
+     position 8.47196 187.24799
+     size 784.49707 506.401
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     {
+      ImageWidgetClass Background0 {
+       ignorepointer 1
+       color 0.1255 0.1098 0.1098 1
+       position -0.55578 -1.87525
+       size 785.58502 511.134
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+      }
+      PanelWidgetClass ZonesPanel {
+       visible 1
+       ignorepointer 1
+       position 7.092 5.268
+       size 775.33002 495.71002
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextWidgetClass ZonesHeader {
+         ignorepointer 1
+         position 26.3919 11.5859
+         size 122.334 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Zones"
+         font "gui/fonts/metron"
+         "text offset" 3 0
+        }
+        TextListboxWidgetClass ListZones {
+         position 13.104 75.1841
+         size 755.71301 352.19202
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         colums "4"
+         lines 30
+         "highlight row" 0
+         font "gui/fonts/metron22"
+        }
+        ButtonWidgetClass BtnListZones {
+         color 0 0.502 0.1255 1
+         position 68.976 438.35297
+         size 150.43199 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Refresh"
+        }
+        ButtonWidgetClass BtnRemoveZone {
+         color 0.502 0 0 1
+         position 559.716 438.35297
+         size 160.98799 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Remove"
+        }
+       }
+      }
+      PanelWidgetClass SpawnerPanel {
+       visible 0
+       ignorepointer 1
+       position 5.42 3.76819
+       size 775.33002 495.71002
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextWidgetClass SpawnerHeader {
+         ignorepointer 1
+         position 10 10
+         size 279.96698 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Zone Spawner"
+        }
+        EditBoxWidgetClass EditSpawnRadius {
+         position 12.5955 132.62302
+         size 269.63101 61.968
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        XComboBoxWidgetClass ComboSpawnTier {
+         position 545.47504 96.2678
+         size 178.368 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        XComboBoxWidgetClass ComboSpawnColor {
+         position 545.47406 145.62701
+         size 178.368 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        XComboBoxWidgetClass ComboSpawnDensity {
+         position 547.02704 194.884
+         size 176.884 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        CheckBoxWidgetClass CheckSpawnMask {
+         position 368.75 306.72202
+         size 229.795 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "GasMask"
+         checked 0
+        }
+        ButtonWidgetClass BtnSpawnerPreview {
+         position 11.7599 437.69901
+         size 179.92 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Preview"
+        }
+        ButtonWidgetClass BtnSpawnerSpawn {
+         position 593.05096 437.785
+         size 173.71199 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Spawn"
+        }
+        TextWidgetClass TextSpawnRadius {
+         ignorepointer 1
+         position 11.1817 79.5631
+         size 268.99399 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Spawn Radius (0m)"
+        }
+        TextWidgetClass TextTiers {
+         ignorepointer 1
+         position 370.091 97.85371
+         size 167.68102 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Tiers"
+        }
+        TextWidgetClass TextColor {
+         ignorepointer 1
+         position 368.50601 147.24699
+         size 170.65001 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Colour"
+        }
+        TextWidgetClass TextDensity {
+         ignorepointer 1
+         position 366.91998 196.47
+         size 172.269 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Density"
+        }
+        ButtonWidgetClass BtnStopPreview {
+         position 201.52501 438.24503
+         size 250.507 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Stop Preview"
+        }
+        CheckBoxWidgetClass CheckSpawnLow {
+         position 369.19699 358.229
+         size 378.34 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Low Performance"
+        }
+        XComboBoxWidgetClass ComboSpawnGastype {
+         position 546.03503 243.12801
+         size 178.04399 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        TextWidgetClass TextGastype {
+         ignorepointer 1
+         position 366.91998 245.63301
+         size 172.269 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Gas Type"
+        }
+        TextWidgetClass TextSpawnHeight {
+         ignorepointer 1
+         position 11.1817 198.62001
+         size 131.261 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Height"
+        }
+        EditBoxWidgetClass EditSpawnHeight {
+         position 10.2611 249.345
+         size 269.63101 61.968
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        TextWidgetClass TextSpawnOffset {
+         ignorepointer 1
+         position 13.5161 316.51001
+         size 131.261 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Offset"
+        }
+        EditBoxWidgetClass EditSpawnBottomOffset {
+         position 9.09386 362.56601
+         size 269.63101 61.968
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+       }
+      }
+      PanelWidgetClass ConfigPanel {
+       visible 0
+       ignorepointer 1
+       position 5.42 6.94
+       size 775.33002 495.71002
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextWidgetClass ConfigHeader {
+         ignorepointer 1
+         position 10 10
+         size 290.83099 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Config Settings"
+        }
+        EditBoxWidgetClass EditAnchorSpacing {
+         position 213.312 117.08801
+         size 165.952 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        EditBoxWidgetClass EditAnchorMax {
+         position 213.312 186.92799
+         size 167.504 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        EditBoxWidgetClass EditParticleLifetime {
+         position 213.312 244.35201
+         size 169.056 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        ButtonWidgetClass BtnSaveConfig {
+         position 455.35696 413.521
+         size 242.41399 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Save Config"
+        }
+        ButtonWidgetClass BtnReloadConfig {
+         position 81.01151 413.45297
+         size 262.82797 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Reload Config"
+        }
+       }
+      }
+      PanelWidgetClass ParticlePanel {
+       visible 0
+       ignorepointer 1
+       position 5.42 6.94
+       size 775.33002 495.71002
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        TextWidgetClass ParticlesHeader {
+         ignorepointer 1
+         position 10 10
+         size 282.83398 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Particle Viewer"
+        }
+        TextListboxWidgetClass ListParticles {
+         position 17.76 90.70409
+         size 743.29706 342.87997
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         font "gui/fonts/metron16"
+        }
+        ButtonWidgetClass BtnReloadParticles {
+         position 444.98199 441.38898
+         size 312.22 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Reload Particles"
+        }
+        ButtonWidgetClass BtnParticlePreview {
+         position 33.7885 444.53799
+         size 157.42799 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "View"
+         font "gui/fonts/metron"
+        }
+        ButtonWidgetClass BtnParticleStop {
+         position 195.55 444.53799
+         size 113.022 48
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Stop"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+  TextWidgetClass StatusText {
+   ignorepointer 1
+   position 13.8085 722.36896
+   size 584.5 48
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   font "gui/fonts/metron22"
+  }
+ }
+}

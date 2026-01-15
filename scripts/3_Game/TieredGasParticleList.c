@@ -1,0 +1,146 @@
+//---------------------------------------------------------------------------------------------------
+// scripts/3_Game/TieredGasParticleList.c
+//
+// File summary: Registers TieredGas particle definitions into ParticleList (cloud variants by color/density + low versions).
+//
+// Functions: none (it’s static particle registrations).
+//---------------------------------------------------------------------------------------------------
+
+modded class ParticleList
+{
+	static const string TIEREDGAS_FOLDER = "TieredGasMod/particles/";
+
+	static const int TieredGasCloud_black_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Dense");
+	static const int TieredGasCloud_black_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Dense_low");
+	static const int TieredGasCloud_black_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Light");
+	static const int TieredGasCloud_black_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Light_low");
+	static const int TieredGasCloud_black_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Normal");
+	static const int TieredGasCloud_black_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_black_Normal_low");
+	static const int TieredGasCloud_blue_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Dense");
+	static const int TieredGasCloud_blue_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Dense_low");
+	static const int TieredGasCloud_blue_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Light");
+	static const int TieredGasCloud_blue_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Light_low");
+	static const int TieredGasCloud_blue_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Normal");
+	static const int TieredGasCloud_blue_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_blue_Normal_low");
+	static const int TieredGasCloud_cyan_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Dense");
+	static const int TieredGasCloud_cyan_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Dense_low");
+	static const int TieredGasCloud_cyan_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Light");
+	static const int TieredGasCloud_cyan_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Light_low");
+	static const int TieredGasCloud_cyan_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Normal");
+	static const int TieredGasCloud_cyan_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_cyan_Normal_low");
+	static const int TieredGasCloud_default_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Dense");
+	static const int TieredGasCloud_default_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Dense_low");
+	static const int TieredGasCloud_default_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Light");
+	static const int TieredGasCloud_default_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Light_low");
+	static const int TieredGasCloud_default_Normal =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Normal");
+	static const int TieredGasCloud_default_Normal_low =			RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_default_Normal_low");
+	static const int TieredGasCloud_green_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Dense");
+	static const int TieredGasCloud_green_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Dense_low");
+	static const int TieredGasCloud_green_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Light");
+	static const int TieredGasCloud_green_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Light_low");
+	static const int TieredGasCloud_green_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Normal");
+	static const int TieredGasCloud_green_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_green_Normal_low");
+	static const int TieredGasCloud_orange_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Dense");
+	static const int TieredGasCloud_orange_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Dense_low");
+	static const int TieredGasCloud_orange_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Light");
+	static const int TieredGasCloud_orange_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Light_low");
+	static const int TieredGasCloud_orange_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Normal");
+	static const int TieredGasCloud_orange_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_orange_Normal_low");
+	static const int TieredGasCloud_pink_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Dense");
+	static const int TieredGasCloud_pink_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Dense_low");
+	static const int TieredGasCloud_pink_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Light");
+	static const int TieredGasCloud_pink_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Light_low");
+	static const int TieredGasCloud_pink_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Normal");
+	static const int TieredGasCloud_pink_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_pink_Normal_low");
+	static const int TieredGasCloud_purple_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Dense");
+	static const int TieredGasCloud_purple_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Dense_low");
+	static const int TieredGasCloud_purple_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Light");
+	static const int TieredGasCloud_purple_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Light_low");
+	static const int TieredGasCloud_purple_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Normal");
+	static const int TieredGasCloud_purple_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_purple_Normal_low");
+	static const int TieredGasCloud_red_Dense =						RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Dense");
+	static const int TieredGasCloud_red_Dense_low =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Dense_low");
+	static const int TieredGasCloud_red_Light =						RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Light");
+	static const int TieredGasCloud_red_Light_low =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Light_low");
+	static const int TieredGasCloud_red_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Normal");
+	static const int TieredGasCloud_red_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_red_Normal_low");
+	static const int TieredGasCloud_white_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Dense");
+	static const int TieredGasCloud_white_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Dense_low");
+	static const int TieredGasCloud_white_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Light");
+	static const int TieredGasCloud_white_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Light_low");
+	static const int TieredGasCloud_white_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Normal");
+	static const int TieredGasCloud_white_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_white_Normal_low");
+	static const int TieredGasCloud_yellow_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Dense");
+	static const int TieredGasCloud_yellow_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Dense_low");
+	static const int TieredGasCloud_yellow_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Light");
+	static const int TieredGasCloud_yellow_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Light_low");
+	static const int TieredGasCloud_yellow_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Normal");
+	static const int TieredGasCloud_yellow_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasCloud_yellow_Normal_low");
+	static const int TieredGasLocal_black_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Dense");
+	static const int TieredGasLocal_black_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Dense_low");
+	static const int TieredGasLocal_black_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Light");
+	static const int TieredGasLocal_black_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Light_low");
+	static const int TieredGasLocal_black_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Normal");
+	static const int TieredGasLocal_black_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_black_Normal_low");
+	static const int TieredGasLocal_blue_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Dense");
+	static const int TieredGasLocal_blue_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Dense_low");
+	static const int TieredGasLocal_blue_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Light");
+	static const int TieredGasLocal_blue_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Light_low");
+	static const int TieredGasLocal_blue_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Normal");
+	static const int TieredGasLocal_blue_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_blue_Normal_low");
+	static const int TieredGasLocal_cyan_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Dense");
+	static const int TieredGasLocal_cyan_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Dense_low");
+	static const int TieredGasLocal_cyan_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Light");
+	static const int TieredGasLocal_cyan_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Light_low");
+	static const int TieredGasLocal_cyan_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Normal");
+	static const int TieredGasLocal_cyan_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_cyan_Normal_low");
+	static const int TieredGasLocal_default_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Dense");
+	static const int TieredGasLocal_default_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Dense_low");
+	static const int TieredGasLocal_default_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Light");
+	static const int TieredGasLocal_default_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Light_low");
+	static const int TieredGasLocal_default_Normal =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Normal");
+	static const int TieredGasLocal_default_Normal_low =			RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_default_Normal_low");
+	static const int TieredGasLocal_green_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Dense");
+	static const int TieredGasLocal_green_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Dense_low");
+	static const int TieredGasLocal_green_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Light");
+	static const int TieredGasLocal_green_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Light_low");
+	static const int TieredGasLocal_green_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Normal");
+	static const int TieredGasLocal_green_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_green_Normal_low");
+	static const int TieredGasLocal_orange_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Dense");
+	static const int TieredGasLocal_orange_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Dense_low");
+	static const int TieredGasLocal_orange_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Light");
+	static const int TieredGasLocal_orange_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Light_low");
+	static const int TieredGasLocal_orange_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Normal");
+	static const int TieredGasLocal_orange_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_orange_Normal_low");
+	static const int TieredGasLocal_pink_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Dense");
+	static const int TieredGasLocal_pink_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Dense_low");
+	static const int TieredGasLocal_pink_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Light");
+	static const int TieredGasLocal_pink_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Light_low");
+	static const int TieredGasLocal_pink_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Normal");
+	static const int TieredGasLocal_pink_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_pink_Normal_low");
+	static const int TieredGasLocal_purple_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Dense");
+	static const int TieredGasLocal_purple_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Dense_low");
+	static const int TieredGasLocal_purple_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Light");
+	static const int TieredGasLocal_purple_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Light_low");
+	static const int TieredGasLocal_purple_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Normal");
+	static const int TieredGasLocal_purple_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_purple_Normal_low");
+	static const int TieredGasLocal_red_Dense =						RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Dense");
+	static const int TieredGasLocal_red_Dense_low =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Dense_low");
+	static const int TieredGasLocal_red_Light =						RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Light");
+	static const int TieredGasLocal_red_Light_low =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Light_low");
+	static const int TieredGasLocal_red_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Normal");
+	static const int TieredGasLocal_red_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_red_Normal_low");
+	static const int TieredGasLocal_white_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Dense");
+	static const int TieredGasLocal_white_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Dense_low");
+	static const int TieredGasLocal_white_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Light");
+	static const int TieredGasLocal_white_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Light_low");
+	static const int TieredGasLocal_white_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Normal");
+	static const int TieredGasLocal_white_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_white_Normal_low");
+	static const int TieredGasLocal_yellow_Dense =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Dense");
+	static const int TieredGasLocal_yellow_Dense_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Dense_low");
+	static const int TieredGasLocal_yellow_Light =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Light");
+	static const int TieredGasLocal_yellow_Light_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Light_low");
+	static const int TieredGasLocal_yellow_Normal =					RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Normal");
+	static const int TieredGasLocal_yellow_Normal_low =				RegisterParticle(TIEREDGAS_FOLDER, "TieredGasLocal_yellow_Normal_low");
+
+}

@@ -1,0 +1,32 @@
+FrameWidgetClass RootWidget {
+ ignorepointer 1
+ position 0 0
+ size 1 1
+ halign left_ref
+ valign top_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ {
+  ImageWidgetClass GasIcon {
+   ignorepointer 1
+   position 0 0   
+   size 64 64
+   halign left_ref
+   valign top_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   imageTexture ""
+   mode blend
+   "src x" 0
+   "src y" 0
+   "src width" 32
+   "src height" 32
+   "stretch" 1
+   visible 1
+  }
+ }
+}
