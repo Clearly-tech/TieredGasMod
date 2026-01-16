@@ -135,7 +135,7 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "NBC Protection Device (Tier 1)";
-		descriptionShort = "Basic NBC protection device. Attach to arm for limited gas protection against toxic gas.";
+		descriptionShort = "Basic NBC protection device. Attach to arm for limited gas protection against toxic gas, bio gas, nerve gas.";
 		
 		hiddenSelectionsTextures[] = 
 		{
@@ -147,7 +147,7 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "NBC Protection Device (Tier 2)";
-		descriptionShort = "Moderate NBC protection device. Effective against toxic and weak nerve gas.";
+		descriptionShort = "Moderate NBC protection device. Effective against toxic gas, bio gas, nerve gas.";
 		
 		hiddenSelectionsTextures[] = 
 		{
@@ -159,7 +159,7 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "NBC Protection Device (Tier 3)";
-		descriptionShort = "Advanced NBC protection device. Protects against most nerve and bio agents.";
+		descriptionShort = "Advanced NBC protection device. Protects against most toxic gas, bio gas, nerve.";
 		
 		hiddenSelectionsTextures[] = 
 		{

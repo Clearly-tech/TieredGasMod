@@ -699,9 +699,9 @@ class TieredGasAdminMenu : ScriptedWidgetEventHandler
         if (m_ComboSpawnGasType)
         {
             m_ComboSpawnGasType.ClearAll();
-            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 1, "Nerve");
-            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 2, "Bio");
-            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 3, "Toxic");
+            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 0, "Nerve");
+            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 1, "Bio");
+            AddComboGasType(m_ComboSpawnGasType, m_GasTypeItems, m_GasTypeLabels, 2, "Toxic");
             m_ComboSpawnGasType.SetCurrentItem(0);
         }
 

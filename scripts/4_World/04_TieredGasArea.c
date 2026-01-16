@@ -43,11 +43,6 @@ void ApplyTieredGasDamage(PlayerBase player, float deltaTime, int gasTier, int g
     if (suitTier > 0)
         TieredGasProtection.ApplyGasWear(player, gasTier, deltaTime, tierMult);
 
-    // Leak model:
-    // - With protection equipped, effects ramp in gradually as the suit's integrity
-    //   drops below a configurable threshold.
-    // - This avoids a "binary" on/off leak and also works correctly if protection
-    //   items are capped above 0% (e.g. never go ruined).
     float leak = 1.0;
     float leakStart = TieredGasJSON.GetProtectionLeakThreshold();
 

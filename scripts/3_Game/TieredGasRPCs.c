@@ -23,7 +23,6 @@ const int RPC_ADMIN_REMOVE_ZONE_BY_UUID = 90019;
 
 const int MENU_TIEREDGAS_ADMIN        = 91000;
 
-// Payload for Spawn Here cause too many Params
 class TieredGasSpawnPayload : Param
 {
     int tier;
