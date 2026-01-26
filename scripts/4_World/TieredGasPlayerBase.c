@@ -610,19 +610,16 @@ modded class PlayerBase
 
                 if (m_TG_ZonesReceived >= m_TG_ZonesExpected)
                 {
-                    string jsonStr = "";
-                    for (int i = 0; i < m_TG_ZonesChunks.Count(); i++)
-                        jsonStr += m_TG_ZonesChunks[i];
+                    array<string> chunks = m_TG_ZonesChunks;
 
                     m_TG_ZonesChunks = null;
                     m_TG_ZonesExpected = 0;
                     m_TG_ZonesReceived = 0;
 
-                    JsonSerializer js = new JsonSerializer();
                     ref array<ref GasZoneConfig> zones = new array<ref GasZoneConfig>;
                     string err = "";
 
-                    if (!js.ReadFromString(zones, jsonStr, err))
+                    if (!TieredGasJSON.ZonesFromChunks(chunks, zones, err))
                     {
                         Print("[TieredGas] ZONES_SYNC JSON parse failed: " + err);
                         return;
@@ -639,11 +636,10 @@ modded class PlayerBase
             {
                 string jsonStrLegacy = p1.param1;
 
-                JsonSerializer js2 = new JsonSerializer();
                 ref array<ref GasZoneConfig> zones2 = new array<ref GasZoneConfig>;
                 string err2 = "";
 
-                if (!js2.ReadFromString(zones2, jsonStrLegacy, err2))
+                if (!TieredGasJSON.ZonesFromJsonString(jsonStrLegacy, zones2, err2))
                 {
                     Print("[TieredGas] ZONES_SYNC legacy JSON parse failed: " + err2);
                     return;

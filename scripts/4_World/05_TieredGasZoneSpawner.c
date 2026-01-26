@@ -165,20 +165,16 @@ class TieredGasZoneSpawner
 
         UpgradeZonesIfNeeded();
 
-        JsonSerializer js = new JsonSerializer();
         string jsonStr;
-        js.WriteToString(m_GasZones, true, jsonStr);
+        array<string> chunks;
+        TieredGasJSON.ZonesToChunks(m_GasZones, ZONES_RPC_CHUNK_SIZE, chunks, jsonStr);
 
         int len = jsonStr.Length();
-        int total = Math.Ceil(len / (float)ZONES_RPC_CHUNK_SIZE);
+        int total = chunks.Count();
 
         for (int i = 0; i < total; i++)
         {
-            int start = i * ZONES_RPC_CHUNK_SIZE;
-            int count = ZONES_RPC_CHUNK_SIZE;
-            if (start + count > len) count = len - start;
-
-            string chunk = jsonStr.Substring(start, count);
+            string chunk = chunks[i];
 
             Param3<int, int, string> p = new Param3<int, int, string>(i, total, chunk);
             GetGame().RPCSingleParam(player, RPC_TIERED_GAS_ZONES_SYNC, p, true, player.GetIdentity());

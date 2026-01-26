@@ -20,21 +20,12 @@ class TieredGasAdminList
 {
     static ref array<string> m_AdminUIDs = new array<string>;
 
+    static bool m_Loaded;
+
     static void Load()
     {
-        string folder = "$profile:TieredGas";
-        string path = folder + "/AdminList.json";
-
-        if (!FileExist(folder)) MakeDirectory(folder);
-
-        if (!FileExist(path))
-        {
-            m_AdminUIDs.Insert("YOUR_UUID_HERE");
-            JsonFileLoader<ref array<string>>.JsonSaveFile(path, m_AdminUIDs);
-            return;
-        }
-
-        JsonFileLoader<ref array<string>>.JsonLoadFile(path, m_AdminUIDs);
+        TieredGasJSON.LoadAdminUIDs(m_AdminUIDs);
+        m_Loaded = true;
     }
 
     static bool IsAdmin(PlayerBase player)
@@ -42,6 +33,7 @@ class TieredGasAdminList
         if (!player) { return false; }
         PlayerIdentity id = player.GetIdentity();
         if (!id) { return false; }
+        if (!m_Loaded) { Load(); }
         return m_AdminUIDs.Find(id.GetId()) != -1;
     }
 }

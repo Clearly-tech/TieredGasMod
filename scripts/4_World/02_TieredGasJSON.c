@@ -158,6 +158,34 @@ class TieredGasJSON_Instance
 
 class TieredGasJSON
 {
+    // --------------------------------------------------------------------
+    // Common paths
+    // --------------------------------------------------------------------
+    static string GetConfigFolder()
+    {
+        return "$profile:TieredGas";
+    }
+
+    static string GetGasSettingsPath()
+    {
+        return GetConfigFolder() + "/GasSettings.json";
+    }
+
+    static string GetGasZonesPath()
+    {
+        return GetConfigFolder() + "/GasZones.json";
+    }
+
+    static string GetAdminListPath()
+    {
+        return GetConfigFolder() + "/AdminList.json";
+    }
+
+    static string GetAdvancedSettingsPath()
+    {
+        return GetConfigFolder() + "/AdvancedTieredGasSetting.json";
+    }
+
     static string GenerateZoneUUID()
     {
         int t = GetGame().GetTime();
@@ -200,8 +228,8 @@ class TieredGasJSON
 
         s_ToxicBleedChanceByTier   = new map<int, float>;
         s_BioInfectionChanceByTier  = new map<int, float>;
-        string folder = "$profile:TieredGas";
-        string path   = folder + "/GasSettings.json";
+        string folder = GetConfigFolder();
+        string path   = GetGasSettingsPath();
 
         if (!FileExist(folder)) { MakeDirectory(folder); }
 
@@ -612,8 +640,8 @@ class TieredGasJSON
     {
         if (!zones) zones = new array<ref GasZoneConfig>();
 
-        string folder = "$profile:TieredGas";
-        string path = folder + "/GasZones.json";
+        string folder = GetConfigFolder();
+        string path = GetGasZonesPath();
 
         if (!FileExist(path)) { return false; }
 
@@ -642,11 +670,162 @@ class TieredGasJSON
 
     static void SaveZonesToJSON(array<ref GasZoneConfig> zones)
     {
-        string folder = "$profile:TieredGas";
-        string path   = folder + "/GasZones.json";
+        string folder = GetConfigFolder();
+        string path   = GetGasZonesPath();
 
         if (!FileExist(folder)) { MakeDirectory(folder); }
         JsonFileLoader<array<ref GasZoneConfig>>.JsonSaveFile(path, zones);
         Print("[TieredGas] Saved " + zones.Count().ToString() + " gas zones to JSON");
+    }
+
+    // --------------------------------------------------------------------
+    // Admin list JSON
+    // --------------------------------------------------------------------
+    static void LoadAdminUIDs(out array<string> uids)
+    {
+        if (!uids) uids = new array<string>;
+
+        string folder = GetConfigFolder();
+        string path   = GetAdminListPath();
+
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+
+        if (!FileExist(path))
+        {
+            // Create a starter file so server owners know what to edit.
+            uids.Insert("YOUR_UUID_HERE");
+            JsonFileLoader<ref array<string>>.JsonSaveFile(path, uids);
+            return;
+        }
+
+        JsonFileLoader<ref array<string>>.JsonLoadFile(path, uids);
+    }
+
+    static void SaveAdminUIDs(array<string> uids)
+    {
+        string folder = GetConfigFolder();
+        string path   = GetAdminListPath();
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+        JsonFileLoader<ref array<string>>.JsonSaveFile(path, uids);
+    }
+
+    // --------------------------------------------------------------------
+    // Advanced settings JSON (anchors/density tuning)
+    // NOTE: TG_AdvancedTieredGasSetting is declared in TieredGasZone.c (4_World)
+    // --------------------------------------------------------------------
+    static TG_AdvancedTieredGasSetting LoadAdvancedSettings(TG_AdvancedTieredGasSetting defaults)
+    {
+        string folder = GetConfigFolder();
+        string path   = GetAdvancedSettingsPath();
+
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+
+        // Ensure we always have defaults to fall back to.
+        if (!defaults)
+        {
+            defaults = new TG_AdvancedTieredGasSetting();
+            defaults.maxAnchorsByRadius = new array<ref TG_AnchorBand>();
+            defaults.densityAnchorMultiplier = new map<string, float>();
+            defaults.spacingByDensity        = new map<string, float>();
+            defaults.jitterByDensity         = new map<string, float>();
+            defaults.maxAnchorsHardCap = 600;
+        }
+
+        ref TG_AdvancedTieredGasSetting result;
+        bool needsSave = false;
+
+        if (FileExist(path))
+        {
+            ref TG_AdvancedTieredGasSetting loaded = new TG_AdvancedTieredGasSetting();
+            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonLoadFile(path, loaded);
+
+            // Minimal schema validation (old files can be empty/missing arrays).
+            if (loaded && loaded.maxAnchorsByRadius && loaded.maxAnchorsByRadius.Count() > 0)
+            {
+                result = loaded;
+            }
+            else
+            {
+                result = defaults;
+                needsSave = true;
+                Print("[TieredGas] AdvancedTieredGasSetting.json missing schema, overwriting with defaults.");
+            }
+        }
+        else
+        {
+            result = defaults;
+            needsSave = true;
+            Print("[TieredGas] Created default AdvancedTieredGasSetting.json");
+        }
+
+        // Field-level migrations / null safety
+        if (!result.maxAnchorsByRadius)      { result.maxAnchorsByRadius = defaults.maxAnchorsByRadius; needsSave = true; }
+        if (!result.densityAnchorMultiplier){ result.densityAnchorMultiplier = defaults.densityAnchorMultiplier; needsSave = true; }
+        if (!result.spacingByDensity)       { result.spacingByDensity        = defaults.spacingByDensity; needsSave = true; }
+        if (!result.jitterByDensity)        { result.jitterByDensity         = defaults.jitterByDensity; needsSave = true; }
+        if (result.maxAnchorsHardCap <= 0)  { result.maxAnchorsHardCap       = defaults.maxAnchorsHardCap; needsSave = true; }
+
+        if (needsSave)
+        {
+            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonSaveFile(path, result);
+        }
+
+        return result;
+    }
+
+    // --------------------------------------------------------------------
+    // Zones RPC JSON helpers (string <-> zones + chunking)
+    // --------------------------------------------------------------------
+    static void ZonesToJsonString(array<ref GasZoneConfig> zones, out string jsonStr, bool pretty = true)
+    {
+        JsonSerializer js = new JsonSerializer();
+        js.WriteToString(zones, pretty, jsonStr);
+    }
+
+    static bool ZonesFromJsonString(string jsonStr, out array<ref GasZoneConfig> zones, out string err)
+    {
+        zones = new array<ref GasZoneConfig>();
+        err = "";
+
+        JsonSerializer js = new JsonSerializer();
+        return js.ReadFromString(zones, jsonStr, err);
+    }
+
+    static void ZonesToChunks(array<ref GasZoneConfig> zones, int chunkSize, out array<string> chunks, out string fullJson)
+    {
+        ZonesToJsonString(zones, fullJson, true);
+
+        int len = fullJson.Length();
+        int total = Math.Ceil(len / (float)chunkSize);
+
+        chunks = new array<string>();
+        chunks.Reserve(total);
+
+        for (int i = 0; i < total; i++)
+        {
+            int start = i * chunkSize;
+            int count = chunkSize;
+            if (start + count > len) count = len - start;
+
+            chunks.Insert(fullJson.Substring(start, count));
+        }
+    }
+
+    static bool ZonesFromChunks(array<string> chunks, out array<ref GasZoneConfig> zones, out string err)
+    {
+        zones = new array<ref GasZoneConfig>();
+        err = "";
+
+        if (!chunks || chunks.Count() == 0)
+        {
+            err = "No chunks";
+            return false;
+        }
+
+        string jsonStr = "";
+        for (int i = 0; i < chunks.Count(); i++)
+            jsonStr += chunks[i];
+
+        return ZonesFromJsonString(jsonStr, zones, err);
     }
 }
