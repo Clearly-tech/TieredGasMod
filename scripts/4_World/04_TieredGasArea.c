@@ -49,8 +49,6 @@ void ApplyTieredGasDamage(PlayerBase player, float deltaTime, int gasTier, int g
     if (suitTier > 0)
     {
         float integrity = TieredGasProtection.GetSuitIntegrity01(player);
-
-        // If admins set an invalid/zero threshold, fall back to full leak once damaged.
         if (leakStart <= 0.0)
         {
             if (integrity < 1.0)
@@ -64,14 +62,12 @@ void ApplyTieredGasDamage(PlayerBase player, float deltaTime, int gasTier, int g
         }
         else
         {
-            // No leak above threshold.
             if (integrity >= leakStart)
             {
                 leak = 0.0;
             }
             else
             {
-                // Ramp leak 0..1 as integrity goes from leakStart down to 0.
                 leak = (leakStart - integrity) / leakStart;
                 if (leak < 0.0) leak = 0.0;
                 if (leak > 1.0) leak = 1.0;
