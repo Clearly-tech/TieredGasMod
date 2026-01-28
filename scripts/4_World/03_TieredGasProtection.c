@@ -44,9 +44,6 @@
 
 class TieredGasProtection
 {
-    // ---------------------------------------------------------------
-    // Protection item lookup (admin-configurable slot)
-    // ---------------------------------------------------------------
     static ItemBase GetProtectionItem(PlayerBase player)
     {
         if (!player) return null;
@@ -55,26 +52,21 @@ class TieredGasProtection
         if (!slotName || slotName.Length() == 0)
             slotName = "Armband";
 
-        // Prefer attachments-by-slot-name for most wearable slots.
         ItemBase it = ItemBase.Cast(player.FindAttachmentBySlotName(slotName));
         if (it) return it;
 
-        // Fallback for some slot implementations.
         return ItemBase.Cast(player.GetItemOnSlot(slotName));
     }
 
-    // Gas wear should never ruin tiered protection items; clamp to a minimum health cap.
     static void DamageProtectionItemClamped(ItemBase item, float damage)
     {
         if (!item || damage <= 0) return;
 
-        // Use same health component used elsewhere in this mod
         string hpSel = "Health";
 
         float maxH = item.GetMaxHealth("", hpSel);
         if (maxH <= 0)
         {
-            // Fallback if selection differs
             maxH = item.GetMaxHealth("", "");
             hpSel = "";
         }
@@ -84,7 +76,7 @@ class TieredGasProtection
         float minH  = maxH * cap01;
 
         float curH = item.GetHealth("", hpSel);
-        if (curH <= minH) return; // already at/under cap
+        if (curH <= minH) return;
 
         float newH = curH - damage;
         if (newH < minH) newH = minH;
@@ -131,15 +123,12 @@ class TieredGasProtection
         ItemBase protectionItem = GetProtectionItem(player);
         if (!protectionItem) { return 0; }
 
-        // 1) If it's the built-in NBCSuit_Base, use its tier logic.
         NBCSuit_Base suit = NBCSuit_Base.Cast(protectionItem);
         if (suit) { return suit.GetProtectionTier(); }
 
-        // 2) Otherwise match directly against configured classnames.
         int cfgTier = TieredGasJSON.GetConfiguredProtectionTierForItem(protectionItem);
         if (cfgTier > 0) return cfgTier;
 
-        // 3) Backwards-compatible fallback: infer from classname containing TierX.
         string t = protectionItem.GetType();
         if (t.Contains("Tier1")) return 1;
         if (t.Contains("Tier2")) return 2;
