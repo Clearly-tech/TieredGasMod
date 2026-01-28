@@ -44,6 +44,25 @@
 
 class TieredGasProtection
 {
+    // ---------------------------------------------------------------
+    // Protection item lookup (admin-configurable slot)
+    // ---------------------------------------------------------------
+    static ItemBase GetProtectionItem(PlayerBase player)
+    {
+        if (!player) return null;
+
+        string slotName = TieredGasJSON.GetProtectionSlot();
+        if (!slotName || slotName.Length() == 0)
+            slotName = "Armband";
+
+        // Prefer attachments-by-slot-name for most wearable slots.
+        ItemBase it = ItemBase.Cast(player.FindAttachmentBySlotName(slotName));
+        if (it) return it;
+
+        // Fallback for some slot implementations.
+        return ItemBase.Cast(player.GetItemOnSlot(slotName));
+    }
+
     // Gas wear should never ruin tiered protection items; clamp to a minimum health cap.
     static void DamageProtectionItemClamped(ItemBase item, float damage)
     {
@@ -77,13 +96,13 @@ class TieredGasProtection
     {
         if (!player) return 0.0;
 
-        ItemBase armband = ItemBase.Cast(player.GetItemOnSlot("Armband"));
-        if (!armband) return 0.0;
+        ItemBase protectionItem = GetProtectionItem(player);
+        if (!protectionItem) return 0.0;
 
-        float maxH = armband.GetMaxHealth("", "Health");
+        float maxH = protectionItem.GetMaxHealth("", "Health");
         if (maxH <= 0) return 0.0;
 
-        float h = armband.GetHealth("", "Health");
+        float h = protectionItem.GetHealth("", "Health");
         float r = h / maxH;
         if (r < 0) r = 0;
         if (r > 1) r = 1;
@@ -109,13 +128,25 @@ class TieredGasProtection
     {
         if (!player) { return 0; }
 
-        ItemBase armband = ItemBase.Cast(player.GetItemOnSlot("Armband"));
-        if (!armband) { return 0; }
+        ItemBase protectionItem = GetProtectionItem(player);
+        if (!protectionItem) { return 0; }
 
-        NBCSuit_Base suit = NBCSuit_Base.Cast(armband);
-        if (!suit) { return 0; }
+        // 1) If it's the built-in NBCSuit_Base, use its tier logic.
+        NBCSuit_Base suit = NBCSuit_Base.Cast(protectionItem);
+        if (suit) { return suit.GetProtectionTier(); }
 
-        return suit.GetProtectionTier();
+        // 2) Otherwise match directly against configured classnames.
+        int cfgTier = TieredGasJSON.GetConfiguredProtectionTierForItem(protectionItem);
+        if (cfgTier > 0) return cfgTier;
+
+        // 3) Backwards-compatible fallback: infer from classname containing TierX.
+        string t = protectionItem.GetType();
+        if (t.Contains("Tier1")) return 1;
+        if (t.Contains("Tier2")) return 2;
+        if (t.Contains("Tier3")) return 3;
+        if (t.Contains("Tier4")) return 4;
+
+        return 0;
     }
 
     static bool HasValidGasMask(PlayerBase player)
@@ -128,13 +159,10 @@ class TieredGasProtection
 
     static bool HasGasImmunity(PlayerBase player)
     {
-        ItemBase armband = ItemBase.Cast(player.GetItemOnSlot("Armband"));
-        if (!armband) { return false; }
+        ItemBase protectionItem = GetProtectionItem(player);
+        if (!protectionItem) { return false; }
 
-        NBCSuit_Base suit = NBCSuit_Base.Cast(armband);
-        if (!suit) { return false; }
-
-        string cfgPath = "CfgVehicles " + armband.GetType() + " GasImmunity";
+        string cfgPath = "CfgVehicles " + protectionItem.GetType() + " GasImmunity";
         if (GetGame().ConfigIsExisting(cfgPath)) { return GetGame().ConfigGetInt(cfgPath) == 1; }
 
         return false;
@@ -142,13 +170,11 @@ class TieredGasProtection
 
     static void ApplyGasWear(PlayerBase player, int gasTier, float deltaTime, float tierMult = 1.0)
     {
-        ItemBase armband = ItemBase.Cast(player.GetItemOnSlot("Armband"));
-        if (!armband) { return; }
+        ItemBase protectionItem = GetProtectionItem(player);
+        if (!protectionItem) { return; }
 
-        NBCSuit_Base suit = NBCSuit_Base.Cast(armband);
-        if (!suit) { return; }
-
-        int suitTier = suit.GetProtectionTier();
+        int suitTier = GetPlayerProtectionTier(player);
+        if (suitTier <= 0) { return; }
         int diff = gasTier - suitTier;
         if (diff <= 0) { return; }
 
@@ -157,7 +183,7 @@ class TieredGasProtection
         float tierMultExtra     = (1.0 + (gasTier * 0.25));
 
         float wear = baseWearPerSecond * diffMult * tierMultExtra * tierMult * deltaTime;
-        DamageProtectionItemClamped(armband, wear);
+        DamageProtectionItemClamped(protectionItem, wear);
     }
 
     static void DrainGasFilter(PlayerBase player, float deltaTime, int gasType, int gasTier)

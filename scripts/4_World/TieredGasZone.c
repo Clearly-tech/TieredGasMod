@@ -163,10 +163,6 @@ class TG_AdvancedTieredGasSettingMgr
     {
         if (s_Loaded && s_Data) return;
 
-        string folder = "$profile:TieredGas";
-        string path = GetPath();
-        if (!FileExist(folder)) { MakeDirectory(folder); }
-
         ref TG_AdvancedTieredGasSetting def = new TG_AdvancedTieredGasSetting();
         def.maxAnchorsByRadius = new array<ref TG_AnchorBand>();
 
@@ -192,34 +188,7 @@ class TG_AdvancedTieredGasSettingMgr
 
         def.maxAnchorsHardCap = 600;
 
-        if (FileExist(path))
-        {
-            ref TG_AdvancedTieredGasSetting loaded = new TG_AdvancedTieredGasSetting();
-            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonLoadFile(path, loaded);
-
-            
-            if (loaded && loaded.maxAnchorsByRadius && loaded.maxAnchorsByRadius.Count() > 0)
-            {
-                s_Data = loaded;
-            }
-            else
-            {
-                s_Data = def;
-                JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonSaveFile(path, def);
-                Print("[TieredGas] AdvancedTieredGasSetting.json missing new schema, overwrote with defaults.");
-            }
-        }
-        else
-        {
-            s_Data = def;
-            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonSaveFile(path, def);
-            Print("[TieredGas] Created default AdvancedTieredGasSetting.json");
-        }
-
-        if (!s_Data.densityAnchorMultiplier) s_Data.densityAnchorMultiplier = def.densityAnchorMultiplier;
-        if (!s_Data.spacingByDensity)        s_Data.spacingByDensity        = def.spacingByDensity;
-        if (!s_Data.jitterByDensity)         s_Data.jitterByDensity         = def.jitterByDensity;
-        if (s_Data.maxAnchorsHardCap <= 0)   s_Data.maxAnchorsHardCap       = def.maxAnchorsHardCap;
+        s_Data = TieredGasJSON.LoadAdvancedSettings(def);
 
         s_Loaded = true;
     }

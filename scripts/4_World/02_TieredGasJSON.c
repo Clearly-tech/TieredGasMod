@@ -154,10 +154,42 @@ class TieredGasJSON_Instance
     float bioInfectionChanceCap;
     ref map<string, ref TieredGasEffectRule> PermanentEffects;
     ref map<string, ref TieredGasEffectRule> TierEffects;
+
+    string protectionSlot;
+
+    ref map<int, string> protectionClassItemsByTier;
 }
 
 class TieredGasJSON
 {
+    // --------------------------------------------------------------------
+    // Common paths
+    // --------------------------------------------------------------------
+    static string GetConfigFolder()
+    {
+        return "$profile:TieredGas";
+    }
+
+    static string GetGasSettingsPath()
+    {
+        return GetConfigFolder() + "/GasSettings.json";
+    }
+
+    static string GetGasZonesPath()
+    {
+        return GetConfigFolder() + "/GasZones.json";
+    }
+
+    static string GetAdminListPath()
+    {
+        return GetConfigFolder() + "/AdminList.json";
+    }
+
+    static string GetAdvancedSettingsPath()
+    {
+        return GetConfigFolder() + "/AdvancedTieredGasSetting.json";
+    }
+
     static string GenerateZoneUUID()
     {
         int t = GetGame().GetTime();
@@ -184,6 +216,9 @@ class TieredGasJSON
     static ref map<string, ref TieredGasEffectRule> s_PermanentEffects;
     static ref map<string, ref TieredGasEffectRule> s_TierEffects;
 
+    static string s_ProtectionSlot = "Armband";
+    static ref map<int, string> s_ProtectionClassItemsByTier;
+
     static bool m_Loaded = false;
 
     static void Load(bool forceReload = false)
@@ -200,8 +235,9 @@ class TieredGasJSON
 
         s_ToxicBleedChanceByTier   = new map<int, float>;
         s_BioInfectionChanceByTier  = new map<int, float>;
-        string folder = "$profile:TieredGas";
-        string path   = folder + "/GasSettings.json";
+        s_ProtectionClassItemsByTier = new map<int, string>;
+        string folder = GetConfigFolder();
+        string path   = GetGasSettingsPath();
 
         if (!FileExist(folder)) { MakeDirectory(folder); }
 
@@ -233,6 +269,14 @@ class TieredGasJSON
                 if (loaded.bioInfectionChanceByTier) s_BioInfectionChanceByTier = loaded.bioInfectionChanceByTier; else { s_BioInfectionChanceByTier = defaults.bioInfectionChanceByTier; needsSave = true; }
                 if (loaded.bioInfectionChanceCap > 0) s_BioInfectionChanceCap = loaded.bioInfectionChanceCap; else { s_BioInfectionChanceCap = defaults.bioInfectionChanceCap; needsSave = true; }
 
+                if (loaded.protectionSlot && loaded.protectionSlot.Length() > 0)
+                    s_ProtectionSlot = loaded.protectionSlot;
+                else { s_ProtectionSlot = defaults.protectionSlot; needsSave = true; }
+
+                if (loaded.protectionClassItemsByTier)
+                    s_ProtectionClassItemsByTier = loaded.protectionClassItemsByTier;
+                else { s_ProtectionClassItemsByTier = defaults.protectionClassItemsByTier; needsSave = true; }
+
                 Print("[TieredGas] Settings loaded from JSON.");
             }
             else
@@ -247,6 +291,8 @@ class TieredGasJSON
                 s_ToxicBleedChanceCap     = defaults.toxicBleedChanceCap;
                 s_BioInfectionChanceByTier = defaults.bioInfectionChanceByTier;
                 s_BioInfectionChanceCap    = defaults.bioInfectionChanceCap;
+                s_ProtectionSlot           = defaults.protectionSlot;
+                s_ProtectionClassItemsByTier = defaults.protectionClassItemsByTier;
                 s_ToxicBleedChanceByTier  = defaults.toxicBleedChanceByTier;
                 s_ToxicBleedChanceCap     = defaults.toxicBleedChanceCap;
                 s_BioInfectionChanceByTier = defaults.bioInfectionChanceByTier;
@@ -272,6 +318,9 @@ class TieredGasJSON
                 merged.bioInfectionChanceByTier = s_BioInfectionChanceByTier;
                 merged.bioInfectionChanceCap    = s_BioInfectionChanceCap;
 
+                merged.protectionSlot = s_ProtectionSlot;
+                merged.protectionClassItemsByTier = s_ProtectionClassItemsByTier;
+
                 JsonFileLoader<TieredGasJSON_Instance>.JsonSaveFile(path, merged);
                 Print("[TieredGas] Migrated GasSettings.json with new protection fields.");
             }
@@ -286,6 +335,8 @@ class TieredGasJSON
             s_ProtectionMinHealthCap  = defaults.protectionMinHealthCap;
             s_NerveExposure = defaults.NerveExposure;
             s_FXByTier      = defaults.FXByTier;
+            s_ProtectionSlot = defaults.protectionSlot;
+            s_ProtectionClassItemsByTier = defaults.protectionClassItemsByTier;
             JsonFileLoader<TieredGasJSON_Instance>.JsonSaveFile(path, defaults);
             Print("[TieredGas] Created default GasSettings.json");
         }
@@ -320,6 +371,13 @@ class TieredGasJSON
         inst.bioInfectionChanceByTier.Insert(3, 0.15);
         inst.bioInfectionChanceByTier.Insert(4, 0.20);
         inst.bioInfectionChanceCap = 0.20;
+
+        inst.protectionSlot = "Armband";
+        inst.protectionClassItemsByTier = new map<int, string>;
+        inst.protectionClassItemsByTier.Insert(1, "NBCSuit_Tier1");
+        inst.protectionClassItemsByTier.Insert(2, "NBCSuit_Tier2");
+        inst.protectionClassItemsByTier.Insert(3, "NBCSuit_Tier3");
+        inst.protectionClassItemsByTier.Insert(4, "NBCSuit_Tier4");
 
 
         inst.NerveExposure = new TieredGasNerveExposureConfig();
@@ -396,6 +454,41 @@ class TieredGasJSON
         if (s_ProtectionMinHealthCap < 0)  s_ProtectionMinHealthCap = 0.0;
         if (s_ProtectionMinHealthCap > 1)  s_ProtectionMinHealthCap = 1.0;
         return s_ProtectionMinHealthCap;
+    }
+
+    static string GetProtectionSlot()
+    {
+        if (!m_Loaded) { Load(); }
+        if (!s_ProtectionSlot || s_ProtectionSlot.Length() == 0)
+            s_ProtectionSlot = "Armband";
+        return s_ProtectionSlot;
+    }
+
+    static map<int, string> GetProtectionClassItemsByTier()
+    {
+        if (!m_Loaded) { Load(); }
+        if (!s_ProtectionClassItemsByTier)
+            s_ProtectionClassItemsByTier = CreateDefaultSettings().protectionClassItemsByTier;
+        return s_ProtectionClassItemsByTier;
+    }
+
+    static int GetConfiguredProtectionTierForItem(ItemBase item)
+    {
+        if (!item) return 0;
+        map<int, string> m = GetProtectionClassItemsByTier();
+        if (!m) return 0;
+
+        string t = item.GetType();
+        for (int tier = 1; tier <= 4; tier++)
+        {
+            if (m.Contains(tier))
+            {
+                string cfg = m.Get(tier);
+                if (cfg && cfg.Length() > 0 && cfg == t)
+                    return tier;
+            }
+        }
+        return 0;
     }
 
     static float GetNerveExposureThreshold()
@@ -536,11 +629,6 @@ class TieredGasJSON
         return false;
     }
 
-
-
-    // --------------------------------------------------------------------
-    // Chance tables helpers
-    // --------------------------------------------------------------------
     static float GetToxicBleedChanceForTier(int tier)
     {
         if (!m_Loaded) { Load(); }
@@ -612,8 +700,8 @@ class TieredGasJSON
     {
         if (!zones) zones = new array<ref GasZoneConfig>();
 
-        string folder = "$profile:TieredGas";
-        string path = folder + "/GasZones.json";
+        string folder = GetConfigFolder();
+        string path = GetGasZonesPath();
 
         if (!FileExist(path)) { return false; }
 
@@ -642,11 +730,148 @@ class TieredGasJSON
 
     static void SaveZonesToJSON(array<ref GasZoneConfig> zones)
     {
-        string folder = "$profile:TieredGas";
-        string path   = folder + "/GasZones.json";
+        string folder = GetConfigFolder();
+        string path   = GetGasZonesPath();
 
         if (!FileExist(folder)) { MakeDirectory(folder); }
         JsonFileLoader<array<ref GasZoneConfig>>.JsonSaveFile(path, zones);
         Print("[TieredGas] Saved " + zones.Count().ToString() + " gas zones to JSON");
+    }
+
+    static void LoadAdminUIDs(out array<string> uids)
+    {
+        if (!uids) uids = new array<string>;
+
+        string folder = GetConfigFolder();
+        string path   = GetAdminListPath();
+
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+
+        if (!FileExist(path))
+        {
+            uids.Insert("YOUR_UUID_HERE");
+            JsonFileLoader<ref array<string>>.JsonSaveFile(path, uids);
+            return;
+        }
+
+        JsonFileLoader<ref array<string>>.JsonLoadFile(path, uids);
+    }
+
+    static void SaveAdminUIDs(array<string> uids)
+    {
+        string folder = GetConfigFolder();
+        string path   = GetAdminListPath();
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+        JsonFileLoader<ref array<string>>.JsonSaveFile(path, uids);
+    }
+
+    static TG_AdvancedTieredGasSetting LoadAdvancedSettings(ref TG_AdvancedTieredGasSetting defaults)
+    {
+        string folder = GetConfigFolder();
+        string path   = GetAdvancedSettingsPath();
+
+        if (!FileExist(folder)) { MakeDirectory(folder); }
+
+        if (!defaults)
+        {
+            defaults = new TG_AdvancedTieredGasSetting();
+            defaults.maxAnchorsByRadius = new array<ref TG_AnchorBand>();
+            defaults.densityAnchorMultiplier = new map<string, float>();
+            defaults.spacingByDensity        = new map<string, float>();
+            defaults.jitterByDensity         = new map<string, float>();
+            defaults.maxAnchorsHardCap = 600;
+        }
+
+        ref TG_AdvancedTieredGasSetting result;
+        bool needsSave = false;
+
+        if (FileExist(path))
+        {
+            ref TG_AdvancedTieredGasSetting loaded = new TG_AdvancedTieredGasSetting();
+            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonLoadFile(path, loaded);
+
+            if (loaded && loaded.maxAnchorsByRadius && loaded.maxAnchorsByRadius.Count() > 0)
+            {
+                result = loaded;
+            }
+            else
+            {
+                result = defaults;
+                needsSave = true;
+                Print("[TieredGas] AdvancedTieredGasSetting.json missing schema, overwriting with defaults.");
+            }
+        }
+        else
+        {
+            result = defaults;
+            needsSave = true;
+            Print("[TieredGas] Created default AdvancedTieredGasSetting.json");
+        }
+
+        if (!result.maxAnchorsByRadius)      { result.maxAnchorsByRadius = defaults.maxAnchorsByRadius; needsSave = true; }
+        if (!result.densityAnchorMultiplier){ result.densityAnchorMultiplier = defaults.densityAnchorMultiplier; needsSave = true; }
+        if (!result.spacingByDensity)       { result.spacingByDensity        = defaults.spacingByDensity; needsSave = true; }
+        if (!result.jitterByDensity)        { result.jitterByDensity         = defaults.jitterByDensity; needsSave = true; }
+        if (result.maxAnchorsHardCap <= 0)  { result.maxAnchorsHardCap       = defaults.maxAnchorsHardCap; needsSave = true; }
+
+        if (needsSave)
+        {
+            JsonFileLoader<TG_AdvancedTieredGasSetting>.JsonSaveFile(path, result);
+        }
+
+        return result;
+    }
+
+    static void ZonesToJsonString(array<ref GasZoneConfig> zones, out string jsonStr, bool pretty = true)
+    {
+        JsonSerializer js = new JsonSerializer();
+        js.WriteToString(zones, pretty, jsonStr);
+    }
+
+    static bool ZonesFromJsonString(string jsonStr, out array<ref GasZoneConfig> zones, out string err)
+    {
+        zones = new array<ref GasZoneConfig>();
+        err = "";
+
+        JsonSerializer js = new JsonSerializer();
+        return js.ReadFromString(zones, jsonStr, err);
+    }
+
+    static void ZonesToChunks(array<ref GasZoneConfig> zones, int chunkSize, out array<string> chunks, out string fullJson)
+    {
+        ZonesToJsonString(zones, fullJson, true);
+
+        int len = fullJson.Length();
+        int total = Math.Ceil(len / (float)chunkSize);
+
+        chunks = new array<string>();
+        chunks.Reserve(total);
+
+        for (int i = 0; i < total; i++)
+        {
+            int start = i * chunkSize;
+            int count = chunkSize;
+            if (start + count > len) count = len - start;
+
+            chunks.Insert(fullJson.Substring(start, count));
+        }
+    }
+
+    static bool ZonesFromChunks(array<string> chunks, out array<ref GasZoneConfig> zones, out string err)
+    {
+        zones = new array<ref GasZoneConfig>();
+        err = "";
+
+        if (!chunks || chunks.Count() == 0)
+        {
+            err = "No chunks";
+            return false;
+        }
+
+        string jsonStr = "";
+        for (int i = 0; i < chunks.Count(); i++)
+            jsonStr += chunks[i];
+
+        return ZonesFromJsonString(jsonStr, zones, err);
     }
 }
